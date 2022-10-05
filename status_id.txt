@@ -1,0 +1,5 @@
+1: chưa tiến hành
+2: đang tiến hành
+3: đã hoàn thành và đang vận chuyển
+4: khách đã nhận hàng
+5: đơn được xác nhận hoàn thành (chốt)
