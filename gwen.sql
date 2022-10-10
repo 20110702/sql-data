@@ -122,5 +122,29 @@ CREATE TABLE [dbo].[order_detail]
 );
 GO
 
+-- Insert rows into table '[dbo].[product]'
+INSERT INTO [dbo].[product] ([name], [description], [type], [price], [quantity])
+VALUES
+( -- first row: values for the columns in the list above
+ "quần tây", "quần tây size s mặc bao mát =))", "quan", 100000, 100
+),
+( -- second row: values for the columns in the list above
+ "áo sơ mi", "áo sơ mi để mặc với quần tay :v", "ao", 200000, 100
+)
+-- add more rows here
+GO
+
+-- Insert rows into table '[dbo].[user]'
+INSERT INTO [dbo].[user]( [password], [role])
+VALUES
+( -- first row: values for the columns in the list above
+ "123456", 0
+),
+( -- second row: values for the columns in the list above
+ "123456", 1
+)
+-- add more rows here
+GO
+
 
 
