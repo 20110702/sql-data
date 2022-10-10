@@ -11,6 +11,8 @@ IF NOT EXISTS (
 CREATE DATABASE Gwen
 GO
 
+USE Gwen
+GO
 
 -- Create a new table called '[customer]' in schema '[dbo]'
 -- Drop the table if it already exists
