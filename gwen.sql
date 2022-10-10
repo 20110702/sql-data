@@ -1,128 +1,68 @@
+-- Create a new database called 'Gwen'
+-- Connect to the 'master' database to run this snippet
+USE master
+GO
+-- Create the new database if it does not exist already
+IF NOT EXISTS (
+    SELECT [name]
+        FROM sys.databases
+        WHERE [name] = N'Gwen'
+)
 CREATE DATABASE Gwen
-Use Gwen
-GO
-
-DROP TABLE IF EXISTS Order_Detail
-GO
-DROP TABLE IF EXISTS Report
-GO
-DROP TABLE IF EXISTS Distributor_work_list
-GO
-DROP TABLE IF EXISTS Customer
-GO
-DROP TABLE IF EXISTS Product
-GO
-DROP TABLE IF EXISTS Manager
-GO
-DROP TABLE IF EXISTS Employee
-GO
-DROP table if exists Quality_Control
 GO
 
 
-CREATE TABLE Order_List
+-- Create a new table called '[customer]' in schema '[dbo]'
+-- Drop the table if it already exists
+IF OBJECT_ID('[dbo].[customer]', 'U') IS NOT NULL
+DROP TABLE [dbo].[customer]
+GO
+-- Create the table in the specified schema
+CREATE TABLE [dbo].[customer]
 (
-    id INT IDENTITY (1, 1) PRIMARY KEY,
-    customer_id INT,
-    prod_id INT,
-    descriptions ntext,
-    receiving_date date,
-    delivery_date date,
-    status_id INT,
-    foreign key (customer_id) references Customer (id),
-    foreign key (prod_id) references Product (id),
-)
-
-CREATE TABLE Customer
-(
-    id INT IDENTITY (1, 1) PRIMARY KEY,
-    f_name nvarchar(200),
-    address nvarchar(200),
-    phone char(10),
-    email varchar(50)
-)
-
-CREATE TABLE Order_Detail
-(
-    ord_id INT,
-    prod_id INT,
-    amount INT,
-    foreign key (ord_id) references Order_List (id),
-    foreign key (prod_id) references Product (id)
-)
-
-CREATE TABLE Product
-(
-    id INT IDENTITY (1, 1) PRIMARY KEY,
-    prod_name nvarchar(200),
-    prod_type nvarchar(200),
-    prod_price money,
-    prod_image text,
-    prod_description nvarchar(200)
-)
-
-CREATE TABLE Manager
-(
-    id INT IDENTITY (1, 1) PRIMARY KEY,
-    f_name nvarchar(200),
-    address nvarchar(200),
-    phone char(10),
-    email varchar(50)
-)
-
-CREATE TABLE Employee
-(
-    id INT IDENTITY (1, 1) PRIMARY KEY,
-    f_name nvarchar(200),
-    address nvarchar(200),
-    phone char(10),
-    email varchar(50)
-)
-
-CREATE TABLE Distributor_work_list
-(
-    manager_id INT,
-    employee_id INT,
-    ord_id INT,
-    detail_work text,
-    foreign key (manager_id) references Manager (id),
-    foreign key (employee_id) references Employee (id),
-    foreign key (ord_id) references Order_List (id)
-)
-
-CREATE TABLE Quality_Control
-(
-    id INT IDENTITY (1, 1) PRIMARY KEY,
-    f_name nvarchar(200),
-    address nvarchar(200),
-    phone char(10),
-    email varchar(50)
-)
-
-CREATE TABLE Report
-(
-    ord_id INT,
-    qc_id INT,
-    result bit,
-    comment text,
-    foreign key (ord_id) references Order_List (id),
-    foreign key (qc_id) references Quality_Control (id)
-)
-CREATE SCHEMA [Customer_View]
+    [Id] INT IDENTITY(0,1) PRIMARY KEY, -- Primary Key column
+    [f_name] NVARCHAR(50) NOT NULL,
+    [address] NVARCHAR(100) NOT NULL,
+    [phone] VARCHAR(10),
+    [email] VARCHAR(50),
+    [password] VARCHAR(30)
+    -- Specify more columns here
+);
 GO
 
-CREATE [Customer_View].VIEW show_product_pants AS
-SELECT prod_name,prod_image,prod_type,prod_price,prod_description FROM Product
-WHERE prod_type = 'pants'
+-- Create a new table called '[user]' in schema '[dbo]'
+-- Drop the table if it already exists
+IF OBJECT_ID('[dbo].[user]', 'U') IS NOT NULL
+DROP TABLE [dbo].[user]
+GO
+-- Create the table in the specified schema
+CREATE TABLE [dbo].[user]
+(
+    [Id] INT IDENTITY(0,1) PRIMARY KEY, -- Primary Key column
+    [password] VARCHAR(30) NOT NULL,
+    [role] BIT NOT NULL -- 0: staff, 1: manager
+    -- Specify more columns here
+);
+GO
 
-CREATE [Customer_View].VIEW show_product_shirt AS
-SELECT prod_name,prod_image,prod_type,prod_price,prod_description FROM Product
-WHERE prod_type = 'shirt'
-
-CREATE [Customer_View].VIEW show_product_outerwear AS
-SELECT prod_name,prod_image,prod_type,prod_price,prod_description FROM Product
-WHERE prod_type = 'outerwear'
-
+-- Create a new table called '[contact]' in schema '[dbo]'
+-- Drop the table if it already exists
+IF OBJECT_ID('[dbo].[contact]', 'U') IS NOT NULL
+DROP TABLE [dbo].[contact]
+GO
+-- Create the table in the specified schema
+CREATE TABLE [dbo].[contact]
+(
+    [user_id] INT,
+    [f_name] NVARCHAR(50) NOT NULL,
+    [phone] VARCHAR(10),
+    [email] VARCHAR(50),
+    [note] NVARCHAR(100),
+    [date_created] DATETIME DEFAULT CURRENT_TIMESTAMP 
+    -- Specify more columns here
+    FOREIGN key (user_id) REFERENCES [dbo].[user] (Id)
+);
+GO
 
 
 
